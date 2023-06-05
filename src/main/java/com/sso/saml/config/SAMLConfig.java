@@ -1,9 +1,7 @@
 package com.sso.saml.config;
 
 
-
 import com.sso.saml.certificate.KeystoreFactory;
-import com.sso.saml.config.success.CustomSavedRequestAwareAuthenticationSuccessHandler;
 import com.sso.saml.saml.SAMLUserDetailsServiceImpl;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -33,7 +31,9 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Timer;
 
 @Configuration
 @EnableConfigurationProperties(SamlProperties.class)
@@ -51,9 +51,6 @@ public class SAMLConfig {
         this.samlProperties = samlProperties;
     }
 
-    @Value("${server.port}")
-    private String serverPort;
-
     @Bean
     public SAMLAuthenticationProvider samlAuthenticationProvider() {
         SAMLAuthenticationProvider provider = new SAMLAuthenticationProvider();
@@ -64,11 +61,6 @@ public class SAMLConfig {
         return provider;
     }
 
-
-//    @Bean
-//    public AuthenticationManager samlAuthenticationManager() {
-//        return new ProviderManager(Arrays.asList(samlAuthenticationProvider()));
-//    }
 
     @Bean(initMethod = "initialize")
     public StaticBasicParserPool parserPool() {
@@ -148,12 +140,8 @@ public class SAMLConfig {
         }
 
         try {
-//            final File file = ResourceUtils.getFile(samlProperties.getIdpXml());
-//            InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(samlProperties.getIdpXml());
-//            ClasspathResource classpathResource = new ClasspathResource(samlProperties.getIdpXml());
             URL resource = getClass().getClassLoader().getResource(samlProperties.getIdpXml());
             CustomClassPathResource customClassPathResource = new CustomClassPathResource(resource);
-//            Resource idpResource = new FilesystemResource(file);
             Timer refreshTimer = new Timer(true);
             ResourceBackedMetadataProvider delegate;
             delegate = new ResourceBackedMetadataProvider(refreshTimer, customClassPathResource);
@@ -221,14 +209,10 @@ public class SAMLConfig {
     }
 
     @Bean
-    public CustomSavedRequestAwareAuthenticationSuccessHandler successRedirectHandler() {
-        CustomSavedRequestAwareAuthenticationSuccessHandler handler = new CustomSavedRequestAwareAuthenticationSuccessHandler();
-        LOGGER.info("当前运行端口{},当前用户{}",serverPort);
-        //需要在进入home之前，把用户名塞入到request
-        handler.setTargetUrlParameter("ssosaml");
-//        handler.setDefaultTargetUrl("/home");
-//        handler.setDefaultTargetUrl("/ssosaml");
-        return handler;
+    public SAMLRelayStateSuccessHandler successRedirectHandler() {
+        SAMLRelayStateSuccessHandler samlRelayStateSuccessHandler = new SAMLRelayStateSuccessHandler();
+        samlRelayStateSuccessHandler.setDefaultTargetUrl("/home");
+        return samlRelayStateSuccessHandler;
     }
 
     @Bean

@@ -1,9 +1,3 @@
-#logging.level.org.springframework.security.saml=DEBUG
-#server.port=443
-#sso.saml.idp-xml=classpath:idp-okta-sf.xml
-#sso.saml.publicKeyCert=classpath:localhost.cert
-#sso.saml.privateKeyCert=classpath:localhost.key.der
-#sso.saml.keyPassword=
 server:
   port: 8080
 sso:

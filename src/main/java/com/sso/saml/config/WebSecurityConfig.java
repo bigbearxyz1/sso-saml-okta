@@ -84,8 +84,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/error", "/saml/**").permitAll()
-//                .antMatchers("/app/**").permitAll()
-//                .antMatchers("/", "/error", "/saml/**", "/idpselection").permitAll()
                 .anyRequest().authenticated();
 //        http
 //                .exceptionHandling()

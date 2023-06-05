@@ -37,7 +37,8 @@ public class SAMLConfigDefaults {
 
     @Bean
     public WebSSOProfileConsumer webSSOprofileConsumer() {
-        CustomWebSSOProfileConsumerImpl webSSOProfileConsumer = new CustomWebSSOProfileConsumerImpl();
+        WebSSOProfileConsumerImpl webSSOProfileConsumer = new WebSSOProfileConsumerImpl();
+        //idp认证成功后，跳转回sp服务器，可能会出现超时，需要延长超时时间
         webSSOProfileConsumer.setResponseSkew(600);
         webSSOProfileConsumer.setMaxAssertionTime(3000);
         return webSSOProfileConsumer;
