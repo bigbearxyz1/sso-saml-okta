@@ -13,12 +13,9 @@ import java.util.Arrays;
 
 /**
  * @author jian.xiong
- * @title: AuthenticationConfig
- * @projectName toolbox
  * @description: TODO
  * @date 2022-12-12
  */
-@ConditionalOnClass(SAMLConfig.class)
 @Configuration
 public class AuthenticationConfig {
 

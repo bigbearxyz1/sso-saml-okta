@@ -5,3 +5,5 @@ sso:
     idp-xml: idp-okta.xml
     publicKeyCert: localhost.cert
     privateKeyCert: localhost.key.der
+    entityBaseURL: http://localhost:8080
+    entityId: urn:test:linxl:guangzhou:keyou

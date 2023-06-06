@@ -44,8 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    @Autowired
 //    private SAMLDiscovery samlIDPDiscovery;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
 
     @Override
@@ -76,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(metadataGeneratorFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(metadataDisplayFilter, MetadataGeneratorFilter.class)
                 .addFilterAfter(samlEntryPoint, MetadataDisplayFilter.class)
-                .addFilterAfter(samlWebSSOProcessingFilter, SAMLEntryPoint.class)
+                .addFilterAfter(samlWebSSOProcessingFilter, EnableUrlParamsSAMLEntryPoint.class)
                 .addFilterAfter(samlWebSSOHoKProcessingFilter, SAMLProcessingFilter.class)
                 .addFilterAfter(samlLogoutProcessingFilter, SAMLWebSSOHoKProcessingFilter.class)
 //                .addFilterAfter(samlIDPDiscovery, SAMLLogoutProcessingFilter.class)
@@ -85,16 +83,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/error", "/saml/**").permitAll()
                 .anyRequest().authenticated();
-//        http
-//                .exceptionHandling()
-//                .authenticationEntryPoint(samlEntryPoint);
         http
                 .logout()
                 .disable();
     }
 
-    @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return authenticationManager;
-    }
 }

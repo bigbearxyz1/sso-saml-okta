@@ -6,6 +6,14 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "sso.saml")
 public class SamlProperties {
+    /**
+     * sso成功后，跳转回项目后的基础url
+     */
+    private String entityBaseURL;
+    /**
+     * sso配置的唯一标识符————entityId
+     */
+    private String entityId;
 
     /**
      * idp 元数据 xml 所在位置
@@ -92,5 +100,21 @@ public class SamlProperties {
 
     public void setKeyPassword(char[] keyPassword) {
         this.keyPassword = keyPassword;
+    }
+
+    public String getEntityBaseURL() {
+        return entityBaseURL;
+    }
+
+    public void setEntityBaseURL(String entityBaseURL) {
+        this.entityBaseURL = entityBaseURL;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 }

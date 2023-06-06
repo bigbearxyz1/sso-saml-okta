@@ -180,7 +180,8 @@ public class SAMLConfig {
         MetadataGenerator generator = new MetadataGenerator();
 //        generator.setEntityId("localhost-demo");
         // SP 标识
-        generator.setEntityId("urn:test:linxl:guangzhou:keyou");
+        generator.setEntityId(samlProperties.getEntityId());
+        generator.setEntityBaseURL(samlProperties.getEntityBaseURL());
         generator.setExtendedMetadata(extendedMetadata());
         // 如果为true，则生成的元数据将包含扩展名，指示其能够使用来自IDP发现服务的响应。
         generator.setIncludeDiscoveryExtension(false);
@@ -210,9 +211,7 @@ public class SAMLConfig {
 
     @Bean
     public SAMLRelayStateSuccessHandler successRedirectHandler() {
-        SAMLRelayStateSuccessHandler samlRelayStateSuccessHandler = new SAMLRelayStateSuccessHandler();
-        samlRelayStateSuccessHandler.setDefaultTargetUrl("/home");
-        return samlRelayStateSuccessHandler;
+        return new SAMLRelayStateSuccessHandler();
     }
 
     @Bean
@@ -239,7 +238,7 @@ public class SAMLConfig {
         WebSSOProfileOptions options = new WebSSOProfileOptions();
         // 默认值：true。当为true时，请求将包括作用域元素。
         options.setIncludeScoping(false);
-        SAMLEntryPoint entryPoint = new SAMLEntryPoint();
+        EnableUrlParamsSAMLEntryPoint entryPoint = new EnableUrlParamsSAMLEntryPoint();
         entryPoint.setDefaultProfileOptions(options);
         entryPoint.setFilterProcessesUrl("/saml/login");
         return entryPoint;
